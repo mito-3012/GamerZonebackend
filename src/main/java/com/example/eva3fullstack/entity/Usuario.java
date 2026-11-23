@@ -1,49 +1,34 @@
 package com.example.eva3fullstack.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.time.LocalDateTime;
-import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "usuarios")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUsuario;
+    private Long id;
 
-    @Column(length = 12, unique = true)
-    private String run;
-
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false, length = 100)
     private String apellido;
 
-    @Column(nullable = false, unique = true, length = 150)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 30)
-    private String rol;
-
-    private String region;
-
-    private String comuna;
-
+    private String telefono;
     private String direccion;
+    private String rol = "CLIENTE"; // CLIENTE o ADMIN
 
-    private Boolean estado = true;
-
+    @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro = LocalDateTime.now();
 }
-
