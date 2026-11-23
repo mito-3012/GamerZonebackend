@@ -20,7 +20,7 @@ public class ResenaProductoService {
     private UsuarioRepository usuarioRepo;
 
     public List<ResenaProducto> listarPorProducto(Long productoId) {
-        return resenaRepo.findByProductoId(productoId);
+        return resenaRepo.findByProducto_IdProducto(productoId);
     }
 
     public ResenaProducto crear(ResenaProductoDTO dto) {

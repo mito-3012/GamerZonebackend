@@ -20,7 +20,7 @@ public class ListaDeseosService {
     private ProductoRepository productoRepo;
 
     public List<ListaDeseos> listarPorUsuario(Long usuarioId) {
-        return listaRepo.findByUsuarioId(usuarioId);
+        return listaRepo.findByUsuario_IdUsuario(usuarioId);
     }
 
     public ListaDeseos agregar(ListaDeseosDTO dto) {
