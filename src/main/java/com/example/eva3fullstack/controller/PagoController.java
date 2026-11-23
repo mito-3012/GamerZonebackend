@@ -12,16 +12,55 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pagos")
-@CrossOrigin(origins = "${FRONTEND_URL:http://localhost:5173}")
+@CrossOrigin(origins = {"${FRONTEND_URL:http://localhost:5173}", "http://localhost:3000"})
 public class PagoController {
-    private final PagoService service;
-    public PagoController(PagoService service) { this.service = service; }
 
-    @GetMapping public List<PagoResponse> listar() { return service.listar().stream().map(PagoResponse::from).toList(); }
-    @GetMapping("/{id}") public PagoResponse obtener(@PathVariable Long id) { return PagoResponse.from(service.obtenerPorId(id)); }
-    @GetMapping("/pedido/{idPedido}") public List<PagoResponse> porPedido(@PathVariable Long idPedido) { return service.listarPorPedido(idPedido).stream().map(PagoResponse::from).toList(); }
-    @GetMapping("/estado/{estado}") public List<PagoResponse> porEstado(@PathVariable String estado) { return service.listarPorEstado(estado).stream().map(PagoResponse::from).toList(); }
-    @PostMapping public ResponseEntity<PagoResponse> crear(@Valid @RequestBody PagoRequest request) { return ResponseEntity.status(HttpStatus.CREATED).body(PagoResponse.from(service.crear(request))); }
-    @PatchMapping("/{id}/estado") public PagoResponse cambiarEstado(@PathVariable Long id, @RequestParam String estado) { return PagoResponse.from(service.actualizarEstado(id, estado)); }
-    @DeleteMapping("/{id}") public ResponseEntity<Void> eliminar(@PathVariable Long id) { service.eliminar(id); return ResponseEntity.noContent().build(); }
+    private final PagoService service;
+
+    public PagoController(PagoService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public List<PagoResponse> listar() {
+        return service.listar().stream().map(PagoResponse::from).toList();
+    }
+
+    @GetMapping("/{id}")
+    public PagoResponse obtener(@PathVariable Long id) {
+        return PagoResponse.from(service.obtenerPorId(id));
+    }
+
+    @GetMapping("/pedido/{idPedido}")
+    public List<PagoResponse> porPedido(@PathVariable Long idPedido) {
+        return service.listarPorPedido(idPedido).stream().map(PagoResponse::from).toList();
+    }
+
+    @GetMapping("/estado/{estado}")
+    public List<PagoResponse> porEstado(@PathVariable String estado) {
+        return service.listarPorEstado(estado).stream().map(PagoResponse::from).toList();
+    }
+
+    @PostMapping
+    public ResponseEntity<PagoResponse> crear(@Valid @RequestBody PagoRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(PagoResponse.from(service.crear(request)));
+    }
+
+    // --- NUEVO ENDPOINT AGREGADO PARA LA SIMULACIÓN DE TARJETA ---
+    @PostMapping("/simular")
+    public ResponseEntity<PagoResponse> simular(@Valid @RequestBody PagoRequest request) {
+        Pago pagoCreado = service.crear(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(PagoResponse.from(pagoCreado));
+    }
+
+    @PatchMapping("/{id}/estado")
+    public PagoResponse cambiarEstado(@PathVariable Long id, @RequestParam String estado) {
+        return PagoResponse.from(service.actualizarEstado(id, estado));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
