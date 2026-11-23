@@ -1,50 +1,44 @@
+// UsuarioService.java
 package com.example.eva3fullstack.service;
 
+import com.example.eva3fullstack.dto.UsuarioDTO;
 import com.example.eva3fullstack.entity.Usuario;
 import com.example.eva3fullstack.repository.UsuarioRepository;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository repository;
-
-    public UsuarioService(UsuarioRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<Usuario> listarTodos() {
-        return repository.findAll();
+        return usuarioRepository.findAll();
     }
 
-    public Usuario buscarPorId(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Usuario no encontrado"));
-    }
-
-    public Usuario crear(Usuario entidad) {
-        return repository.save(entidad);
-    }
-
-    public Usuario actualizar(Long id, Usuario datos) {
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Usuario no encontrado");
+    public Usuario registrarUsuario(UsuarioDTO dto) {
+        if (usuarioRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("El correo ya está registrado");
         }
-        datos.setIdUsuario(id);
-        return repository.save(datos);
+        Usuario u = new Usuario();
+        u.setNombre(dto.getNombre());
+        u.setApellido(dto.getApellido());
+        u.setEmail(dto.getEmail());
+        u.setPassword(dto.getPassword());
+        u.setTelefono(dto.getTelefono());
+        u.setDireccion(dto.getDireccion());
+        u.setRol(dto.getRol() != null ? dto.getRol() : "CLIENTE");
+        return usuarioRepository.save(u);
     }
 
-    public void eliminar(Long id) {
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Usuario no encontrado");
+    public Usuario autenticar(String email, String password) {
+        Usuario u = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        if (!u.getPassword().equals(password)) {
+            throw new RuntimeException("Contraseña incorrecta");
         }
-        repository.deleteById(id);
+        return u;
     }
 }
