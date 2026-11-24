@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface ListaDeseosRepository extends JpaRepository<ListaDeseos, Long> {
-    List<ListaDeseos> findByUsuario_IdUsuario(Long usuarioId);
+    List<ListaDeseos> findByUsuarioId(Long usuarioId);
 }

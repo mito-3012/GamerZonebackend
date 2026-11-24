@@ -17,7 +17,7 @@ public class DireccionEnvioService {
     private UsuarioRepository usuarioRepo;
 
     public List<DireccionEnvio> listarPorUsuario(Long usuarioId) {
-        return direccionRepo.findByUsuario_IdUsuario(usuarioId);
+        return direccionRepo.findByUsuarioId(usuarioId);
     }
 
     public DireccionEnvio guardar(DireccionEnvioDTO dto) {

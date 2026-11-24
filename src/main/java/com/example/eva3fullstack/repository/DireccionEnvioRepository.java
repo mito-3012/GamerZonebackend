@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface DireccionEnvioRepository extends JpaRepository<DireccionEnvio, Long> {
-    List<DireccionEnvio> findByUsuario_IdUsuario(Long usuarioId);
+    List<DireccionEnvio> findByUsuarioId(Long usuarioId);
 }
