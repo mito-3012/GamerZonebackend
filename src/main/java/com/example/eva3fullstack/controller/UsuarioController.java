@@ -3,6 +3,7 @@ package com.example.eva3fullstack.controller;
 import com.example.eva3fullstack.dto.UsuarioDTO;
 import com.example.eva3fullstack.entity.Usuario;
 import com.example.eva3fullstack.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody UsuarioDTO dto) {
+    public ResponseEntity<?> crear(@Valid @RequestBody UsuarioDTO dto) {
         try {
             Usuario nuevo = usuarioService.registrarUsuario(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);

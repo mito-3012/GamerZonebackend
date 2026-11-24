@@ -24,7 +24,7 @@ public class UsuarioDTO {
     private String email;
 
     @NotBlank(message = "La contraseña no puede estar vacía")
-    @Size(min = 4, max = 10, message = "La contraseña debe tener entre 4 y 10 caracteres")
+    @Size(min = 4, max = 100, message = "La contraseña debe tener entre 4 y 100 caracteres")
     private String password;
 
     private String telefono;
@@ -37,4 +37,6 @@ public class UsuarioDTO {
 
     @NotBlank(message = "La dirección es obligatoria")
     private String direccion;
+
+    private String rol;
 }

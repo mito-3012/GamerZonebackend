@@ -55,6 +55,9 @@ public class Usuario {
     @Column(nullable = false)
     private String direccion;
 
+    @Column(nullable = false)
+    private String rol = "Cliente";
+
     @NotNull(message = "La fecha de registro no puede ser nula")
     @Column(name = "fecha_registro", nullable = false)
     private LocalDateTime fechaRegistro = LocalDateTime.now();

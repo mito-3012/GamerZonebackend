@@ -35,6 +35,7 @@ public class UsuarioService {
         u.setRegion(dto.getRegion());
         u.setComuna(dto.getComuna());
         u.setDireccion(dto.getDireccion());
+        u.setRol(dto.getRol() != null && !dto.getRol().isBlank() ? dto.getRol() : "Cliente");
 
         return usuarioRepository.save(u);
     }
