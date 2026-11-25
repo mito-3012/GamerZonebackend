@@ -1,4 +1,3 @@
-
 package com.example.eva3fullstack.entity;
 
 import jakarta.persistence.*;
@@ -31,4 +30,7 @@ public class DetalleCarrito {
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precioUnitario;
+
+    @Column(name = "email_usuario", length = 150)
+    private String emailUsuario;
 }
