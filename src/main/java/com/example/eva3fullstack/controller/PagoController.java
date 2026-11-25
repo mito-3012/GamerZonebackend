@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pagos")
-@CrossOrigin(origins = {"${FRONTEND_URL:http://localhost:5173}", "http://localhost:3000"})
+@CrossOrigin(origins = "*")
 public class PagoController {
 
     private final PagoService service;
