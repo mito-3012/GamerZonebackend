@@ -1,6 +1,6 @@
-
 package com.example.eva3fullstack.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,11 @@ public class Carrito {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Usuario usuario;
+
+    @Column(name = "email_usuario", length = 150)
+    private String emailUsuario;
 
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 

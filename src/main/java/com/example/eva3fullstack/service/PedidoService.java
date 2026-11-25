@@ -1,8 +1,14 @@
 package com.example.eva3fullstack.service;
 
 import com.example.eva3fullstack.dto.PedidoCrearRequest;
-import com.example.eva3fullstack.entity.*;
-import com.example.eva3fullstack.repository.*;
+import com.example.eva3fullstack.entity.DetallePedido;
+import com.example.eva3fullstack.entity.Pedido;
+import com.example.eva3fullstack.entity.Producto;
+import com.example.eva3fullstack.entity.Usuario;
+import com.example.eva3fullstack.repository.DetallePedidoRepository;
+import com.example.eva3fullstack.repository.PedidoRepository;
+import com.example.eva3fullstack.repository.ProductoRepository;
+import com.example.eva3fullstack.repository.UsuarioRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +58,14 @@ public class PedidoService {
         }
         if (entidad.getEstado() == null || entidad.getEstado().isBlank()) {
             entidad.setEstado("PENDIENTE");
+        }
+        if (entidad.getUsuario() != null && entidad.getUsuario().getId() != null) {
+            usuarios.findById(entidad.getUsuario().getId()).ifPresent(u -> {
+                entidad.setUsuario(u);
+                if (entidad.getEmailUsuario() == null || entidad.getEmailUsuario().isBlank()) {
+                    entidad.setEmailUsuario(u.getEmail());
+                }
+            });
         }
         return pedidos.save(entidad);
     }
@@ -110,6 +124,7 @@ public class PedidoService {
 
         Pedido pedido = new Pedido();
         pedido.setUsuario(usuario);
+        pedido.setEmailUsuario(usuario.getEmail());
         pedido.setDireccionDespacho(request.direccionDespacho());
         pedido.setFechaPedido(LocalDateTime.now());
         pedido.setSubtotal(BigDecimal.ZERO);
@@ -134,17 +149,6 @@ public class PedidoService {
                             HttpStatus.NOT_FOUND,
                             "Producto no encontrado con ID: " + item.idProducto()
                     ));
-
-            /* Si tu entidad Producto maneja stock, descomenta este bloque:
-            if (producto.getStock() < item.cantidad()) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "Stock insuficiente para el producto: " + producto.getNombre()
-                );
-            }
-            producto.setStock(producto.getStock() - item.cantidad());
-            productos.save(producto);
-            */
 
             BigDecimal precio = producto.getPrecio();
             BigDecimal totalProducto = precio.multiply(BigDecimal.valueOf(item.cantidad()));

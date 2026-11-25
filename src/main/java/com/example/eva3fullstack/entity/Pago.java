@@ -1,4 +1,3 @@
-
 package com.example.eva3fullstack.entity;
 
 import jakarta.persistence.*;
@@ -23,6 +22,9 @@ public class Pago {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_pedido", nullable = false)
     private Pedido pedido;
+
+    @Column(name = "email_usuario", length = 150)
+    private String emailUsuario;
 
     @Column(nullable = false, length = 30)
     private String metodoPago;

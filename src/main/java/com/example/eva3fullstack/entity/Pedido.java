@@ -25,6 +25,9 @@ public class Pedido {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Usuario usuario;
 
+    @Column(name = "email_usuario", length = 150)
+    private String emailUsuario;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cupon")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

@@ -20,7 +20,8 @@ public class PagoService {
     private final PedidoRepository pedidos;
 
     public PagoService(PagoRepository pagos, PedidoRepository pedidos) {
-        this.pagos = pagos; this.pedidos = pedidos;
+        this.pagos = pagos;
+        this.pedidos = pedidos;
     }
 
     @Transactional(readOnly = true)
@@ -42,7 +43,7 @@ public class PagoService {
 
     public Pago crear(PagoRequest request) {
         Pedido pedido = pedidos.findById(request.idPedido())
-            .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado: " + request.idPedido()));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado: " + request.idPedido()));
         if (pedido.getTotal() == null || pedido.getTotal().compareTo(BigDecimal.ZERO) <= 0)
             throw new ResponseStatusException(HttpStatus.CONFLICT, "El pedido no tiene un total válido");
         if (request.monto().compareTo(pedido.getTotal()) != 0)
@@ -52,6 +53,11 @@ public class PagoService {
 
         Pago pago = new Pago();
         pago.setPedido(pedido);
+        if (pedido.getEmailUsuario() != null && !pedido.getEmailUsuario().isBlank()) {
+            pago.setEmailUsuario(pedido.getEmailUsuario());
+        } else if (pedido.getUsuario() != null) {
+            pago.setEmailUsuario(pedido.getUsuario().getEmail());
+        }
         pago.setMetodoPago(request.metodoPago().trim().toUpperCase());
         pago.setMonto(request.monto());
         pago.setMoneda("CLP");
