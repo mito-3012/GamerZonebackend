@@ -35,12 +35,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**", "/api/usuarios/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/usuarios", "/api/contacto/**", "/api/contactos/**", "/api/mensajes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios", "/api/mensajes-contacto/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/productos/**", "/api/categorias/**", "/api/noticias/**", "/api/resenas/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/productos/**", "/api/categorias/**", "/api/noticias/**").hasAnyRole("ADMINISTRADOR", "VENDEDOR")
                         .requestMatchers(HttpMethod.PUT, "/api/productos/**", "/api/categorias/**", "/api/noticias/**").hasAnyRole("ADMINISTRADOR", "VENDEDOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/productos/**", "/api/categorias/**", "/api/noticias/**", "/api/usuarios/**").hasRole("ADMINISTRADOR")
-                        // Rutas de compra, carrito y pedidos accesibles para cualquier usuario autenticado
+                        // Rutas de compra, carrito, deseos y pedidos accesibles para cualquier usuario autenticado
                         .requestMatchers("/api/pedidos/**", "/api/pagos/**", "/api/carritos/**", "/api/deseos/**", "/api/lista-deseos/**").authenticated()
                         .anyRequest().authenticated()
                 )
