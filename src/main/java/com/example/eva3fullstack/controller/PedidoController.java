@@ -3,6 +3,8 @@ package com.example.eva3fullstack.controller;
 import com.example.eva3fullstack.dto.PedidoCrearRequest;
 import com.example.eva3fullstack.entity.Pedido;
 import com.example.eva3fullstack.service.PedidoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedidos")
-@CrossOrigin(origins = "*")
+@Tag(name = "Pedidos", description = "Gestión de pedidos y compras desde el carrito")
 public class PedidoController {
 
     private final PedidoService service;
@@ -22,22 +24,26 @@ public class PedidoController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar todos los pedidos")
     public ResponseEntity<List<Pedido>> listarTodos() {
         return ResponseEntity.ok(service.listarTodos());
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar pedido por ID")
     public ResponseEntity<Pedido> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     @PostMapping
+    @Operation(summary = "Crear un pedido")
     public ResponseEntity<Pedido> crear(@Valid @RequestBody Pedido entidad) {
         Pedido nuevo = service.crear(entidad);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar estado o datos de un pedido")
     public ResponseEntity<Pedido> actualizar(
             @PathVariable Long id,
             @RequestBody Pedido entidad) {
@@ -45,12 +51,14 @@ public class PedidoController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar un pedido")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/crear-desde-carrito")
+    @Operation(summary = "Crear pedido directamente desde los items del carrito")
     public ResponseEntity<Pedido> crearDesdeCarrito(
             @Valid @RequestBody PedidoCrearRequest request) {
         Pedido nuevo = service.crearDesdeCarrito(request);
