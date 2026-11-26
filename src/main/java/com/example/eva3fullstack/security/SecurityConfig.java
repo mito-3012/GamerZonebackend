@@ -40,6 +40,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/productos/**", "/api/categorias/**", "/api/noticias/**").hasAnyRole("ADMINISTRADOR", "VENDEDOR")
                         .requestMatchers(HttpMethod.PUT, "/api/productos/**", "/api/categorias/**", "/api/noticias/**").hasAnyRole("ADMINISTRADOR", "VENDEDOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/productos/**", "/api/categorias/**", "/api/noticias/**", "/api/usuarios/**").hasRole("ADMINISTRADOR")
+                        // Rutas de compra, carrito y pedidos accesibles para cualquier usuario autenticado
+                        .requestMatchers("/api/pedidos/**", "/api/pagos/**", "/api/carritos/**", "/api/deseos/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
